@@ -6,7 +6,7 @@ import PrimaryTextInput from '../../components/UI/PrimaryTextInput/PrimaryTextIn
 
 const Login: () => React$Node = ({ navigation }) => {
     return (
-        <View style={{flex: 1, justifyContent: "center", alignItems: "center", padding: "25" }}>
+        <View style={{flex: 1, justifyContent: "center", alignItems: "center", padding: 25 }}>
             <PrimaryTextInput placeholder="Seu nome"></PrimaryTextInput>
             <CustomButton text="Olá"
                 onPress={() => {

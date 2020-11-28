@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const CustomButtonStyle = StyleSheet.create({
     btPrimary: {
-        width: "80%",
+        width: "90%",
         borderRadius: 5,
         justifyContent: "center",
         alignItems: "center",
@@ -10,7 +10,7 @@ const CustomButtonStyle = StyleSheet.create({
         backgroundColor: "#0070c9",
     },
     btSecondary: {
-        width: "80%",
+        width: "90%",
         borderRadius: 5,
         justifyContent: "center",
         alignItems: "center",
