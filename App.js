@@ -31,6 +31,8 @@ import Register from './src/screens/Register/Register';
 import PasswordRecovery from './src/screens/PasswordRecovery/PasswordRecovery';
 import RecoveryNote from './src/screens/RecoveryNote/RecoveryNote';
 import AccountCreated from './src/screens/AccountCreated/AccountCreated';
+import Tasks from './src/screens/Tasks/Tasks';
+
 
 const Stack = createStackNavigator();
 
@@ -46,7 +48,11 @@ const App: () => React$Node = () => {
 
         <Stack.Screen
           name="Tasks"
-          children={() => (<Text>Your tasks here</Text>)}
+          component={Tasks}
+          options={({ navigation, route }) => ({
+            headerLeft: null,
+            gestureEnabled: false
+          })}
         />
 
         <Stack.Screen
