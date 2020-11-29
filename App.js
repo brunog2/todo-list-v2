@@ -9,9 +9,10 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import {
-  SafeAreaView,
+  TouchableOpacity,
   StyleSheet,
   ScrollView,
+  Button,
   View,
   Text,
   StatusBar,
@@ -24,6 +25,7 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Login from './src/screens/Login/Login';
@@ -40,6 +42,7 @@ const App: () => React$Node = () => {
   return (
 
     <NavigationContainer>
+      <StatusBar backgroundColor="white" barStyle="dark-content"/>
       <Stack.Navigator>
         <Stack.Screen
           name="Login"
@@ -49,10 +52,7 @@ const App: () => React$Node = () => {
         <Stack.Screen
           name="Tasks"
           component={Tasks}
-          options={({ navigation, route }) => ({
-            headerLeft: null,
-            gestureEnabled: false
-          })}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
