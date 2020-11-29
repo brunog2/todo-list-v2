@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-const RegisterStyles = StyleSheet.create({
+const PasswordRecoveryStyles = StyleSheet.create({
     mainContainer: {
         flex: 1,
         backgroundColor: "#fff",
@@ -13,26 +13,26 @@ const RegisterStyles = StyleSheet.create({
     inputText: {
         marginBottom: 5,
     },
-    btRegister: {
-        marginTop: 10
+    btRecoveryPassword: {
+        marginTop: 5,
     },
-    otherOptionsContainer: {
-        marginTop: 15,
+    titleContainer: {
+        marginLeft: "auto",
+        marginRight: "auto",
+        marginBottom: 15,
         width: "90%",
-        justifyContent: "space-between",
-        alignItems: "flex-start",
-        justifyContent: "space-between"
-    },
-    terms: {
-        color: "#000",
-        marginBottom: 7,
+        justifyContent: "center",
+        alignItems: "center",
+        marginBottom: 15,
     },
     observation: {
         color: "#000",
+        fontSize: 18,
+        textAlign: "center"
     },
     login: {
         color: "#0070c9"
     }
 })
 
-export default RegisterStyles;
+export default PasswordRecoveryStyles;

@@ -27,33 +27,50 @@ import {
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Login from './src/screens/Login/Login';
+import Register from './src/screens/Register/Register';
+import PasswordRecovery from './src/screens/PasswordRecovery/PasswordRecovery';
+import RecoveryNote from './src/screens/RecoveryNote/RecoveryNote';
+import AccountCreated from './src/screens/AccountCreated/AccountCreated';
 
 const Stack = createStackNavigator();
 
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
-    </View>
-  );
-}
-
 const App: () => React$Node = () => {
   return (
-    
-      <NavigationContainer>
-        <Stack.Navigator>
-            <Stack.Screen 
-            name="Login"
-            component={Login}
-            />
-            <Stack.Screen 
-            name="Tasks"
-            children={() => (<Text>Olá</Text>)}
-            />
-        </ Stack.Navigator >
-      </NavigationContainer>
-    
+
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Login"
+          component={Login}
+        />
+
+        <Stack.Screen
+          name="Tasks"
+          children={() => (<Text>Your tasks here</Text>)}
+        />
+
+        <Stack.Screen
+          name="Register"
+          component={Register}
+        />
+
+        <Stack.Screen
+          name="Password Recovery"
+          component={PasswordRecovery}
+        />
+
+        <Stack.Screen
+          name="Recovery Note"
+          component={RecoveryNote}
+        />
+
+        <Stack.Screen
+          name="Account Created"
+          component={AccountCreated}
+        />
+      </ Stack.Navigator >
+    </NavigationContainer>
+
   );
 };
 
