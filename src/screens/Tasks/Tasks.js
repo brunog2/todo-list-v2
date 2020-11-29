@@ -1,6 +1,7 @@
 import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
 import { View, Text, BackHandler, Alert } from 'react-native';
+import TasksStyles from './TasksStyles';
 
 const Login: () => React$Node = ({ navigation }) => {
 
@@ -26,7 +27,7 @@ const Login: () => React$Node = ({ navigation }) => {
   }, []);
 
 return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <View style={TasksStyles.mainContainer}>
         <View style={{ justifyContent: "center", alignItems: "center" }}>
             <Text>You tasks here</Text>
         </View>
