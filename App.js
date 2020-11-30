@@ -47,6 +47,7 @@ const App: () => React$Node = () => {
         <Stack.Screen
           name="Login"
           component={Login}
+          options={{gestureEnabled: false}}
         />
 
         <Stack.Screen
@@ -68,11 +69,13 @@ const App: () => React$Node = () => {
         <Stack.Screen
           name="Recovery Note"
           component={RecoveryNote}
+          options={{headerLeft: null, gestureEnabled: false}}
         />
 
         <Stack.Screen
-          name="Account Created"
+          name="Account Created!"
           component={AccountCreated}
+          options={{headerLeft: null, gestureEnabled: false}}
         />
       </ Stack.Navigator >
     </NavigationContainer>

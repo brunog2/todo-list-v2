@@ -1,0 +1,46 @@
+import 'react-native-gesture-handler';
+import React, { useEffect } from 'react';
+import { View, Text, BackHandler, Alert } from 'react-native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
+import Login from '../Login/Login';
+import TasksStyles from './TasksStyles';
+
+const Drawer = createDrawerNavigator();
+
+const Tasks: () => React$Node = ({ navigation }) => {
+
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert("Hey!", "Are you sure you want exit?", [
+        {
+          text: "Cancel",
+          onPress: () => null,
+          style: "cancel"
+        },
+        { text: "YES", onPress: () => BackHandler.exitApp() }
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
+  return (
+    <>
+      
+      <View style={TasksStyles.mainContainer}>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Text>Your tasks here</Text>
+        </View>
+      </View>
+    </>
+  )
+};
+
+export default Tasks;

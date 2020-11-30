@@ -14,13 +14,15 @@ const Register: () => React$Node = ({ navigation }) => {
                 <PrimaryTextInput style={RegisterStyles.inputText} placeholder="Password"></PrimaryTextInput>
                 <CustomButton style={RegisterStyles.btRegister} text="Register"
                     onPress={() => {
-                        navigation.navigate('Account Created')
+                        navigation.navigate('Account Created!')
                     }}>
                 </CustomButton>
             </View>
             <View style={RegisterStyles.otherOptionsContainer}>
                 <Text style={RegisterStyles.terms}>By registering, you agree with our terms</Text>
-                <Text style={RegisterStyles.observation}>Already have an account? <Text style={RegisterStyles.login}>Log in here</Text></Text>
+                <Text style={RegisterStyles.observation}>Already have an account? <Text style={RegisterStyles.login} onPress={() => {
+                    navigation.navigate('Login')
+                }}>Log in here</Text></Text>
             </View>
         </View>
     )
