@@ -12,18 +12,18 @@ const AddTaskStyles = StyleSheet.create({
         width: "100%",
 
     },
-    searchContainer: {
+    addContainer: {
         marginTop: 10,
-        height: 50,
+        height: 40,
         width: "90%",
         flexDirection: "row",
         borderRadius: 6,
         justifyContent: "space-between",
         alignItems: "center",
         height: "65%",
-        maxHeight: 35,
+        maxHeight: 40,
     },
-    searchInput: {
+    addInput: {
 
 
         backgroundColor: "#ebf0f5",
@@ -39,7 +39,7 @@ const AddTaskStyles = StyleSheet.create({
         paddingTop: 5,
         width: "90%",
         borderRadius: 7,
-        height: 40,
+        height: 41,
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",

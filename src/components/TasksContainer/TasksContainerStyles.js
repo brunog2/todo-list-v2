@@ -17,7 +17,7 @@ const TasksContainerStyles = StyleSheet.create({
 
         backgroundColor: "#ebf0f5",
         height: "65%",
-        maxHeight: 35,
+        maxHeight: 40,
     },
     searchInput: {
 

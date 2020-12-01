@@ -6,17 +6,21 @@ export default class PrimaryTextInput extends Component {
     render() {
         return (
 
-                <TextInput
-                    placeholder={this.props.placeholder}
-                    style={[PrimaryTextInputStyle.inputData, this.props.style]}
-                    autoCapitalize={this.props.autoCapitalize}
-                    autoCompleteType={this.props.autoCompleteType}
-                    onChangeText={this.props.onChangeText}
-                    secureTextEntry={this.props.secureTextEntry}
-                    value={this.props.value}
-                    autoFocus={this.props.autoFocus} 
-                    autoCorrect={this.props.autoCorrect}/>
-       
+            <TextInput
+                placeholder={this.props.placeholder}
+                style={[PrimaryTextInputStyle.inputData, this.props.style]}
+                autoCapitalize={this.props.autoCapitalize}
+                autoCompleteType={this.props.autoCompleteType}
+                onChangeText={this.props.onChangeText}
+                secureTextEntry={this.props.secureTextEntry}
+                value={this.props.value}
+                autoFocus={this.props.autoFocus}
+                autoCorrect={this.props.autoCorrect}
+                textContentType={this.props.textContentType}
+                blurOnSubmit={this.props.blurOnSubmit}
+                onSubmitEditing={this.props.onSubmitEditing}
+            />
+
 
         )
     }

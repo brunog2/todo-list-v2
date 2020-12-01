@@ -84,8 +84,8 @@ const AddTask: () => React$Node = ({ route, navigation }) => {
     return (
         <View style={AddTaskStyles.mainContainer}>
             <View style={AddTaskStyles.elementsContainer}>
-                <View style={AddTaskStyles.searchContainer}>
-                    <TextInput value={taskDescription} onChangeText={text => setTaskDescription(text)} placeholder="Task name" style={AddTaskStyles.searchInput} />
+                <View style={AddTaskStyles.addContainer}>
+                    <TextInput value={taskDescription} onChangeText={text => setTaskDescription(text)} placeholder="Task name" style={AddTaskStyles.addInput} />
                     <Icon type="ionicon" name="add-circle-outline" style={AddTaskStyles.btAddTask} onPress={() => handleOnAddTaskBtPress()} />
                 </View>
 

@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useState } from 'react';
-import { View, Text, KeyboardAvoidingView, Alert } from 'react-native';
+import { View, Text, Keyboard, KeyboardAvoidingView, Alert } from 'react-native';
 import CustomButton from '../../components/UI/CustomButton/CustomButton';
 import PrimaryTextInput from '../../components/UI/PrimaryTextInput/PrimaryTextInput';
 import RegisterStyles from './RegisterStyles';
@@ -70,7 +70,11 @@ const Register: () => React$Node = ({ navigation }) => {
                         autoCompleteType="off"
                         style={RegisterStyles.inputText}
                         placeholder="Password"
-                        autoCorrect={false}>
+                        autoCorrect={false}
+                        textContentType="none"
+                        blurOnSubmit={false}
+                        onSubmitEditing={()=> Keyboard.dismiss()}
+                    >
                     </PrimaryTextInput>
 
                     <CustomButton

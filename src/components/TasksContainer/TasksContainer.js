@@ -20,6 +20,7 @@ const TasksContainer = (props) => {
     const id = props.userId;
 
     async function loadTasks() {
+        console.log("o id do usuário: ", id)
         await api.get('/tasks', { params: { userId: id } })
             .then(response => {
                 setTasks(response.data);
@@ -39,7 +40,7 @@ const TasksContainer = (props) => {
 
     const handleSearchTextChange = (text) => {
         setSearchText(text);
-        api.get('/searchTask', { params: { keywords: text } })
+        api.get('/searchTask', { params: { keywords: text, userId: id } })
             .then(response => {
                 setTasks(response.data);
             })
