@@ -9,13 +9,13 @@ const DrawerContentStyles = StyleSheet.create({
         marginRight: "auto",
         justifyContent: "center",
         height: 120,
-        width: 120,
+        width: "100%",
         borderColor: "#d9d9d9",
-        borderWidth: 1,
-        borderRadius: 60,
     },
     logo: {
         textAlign: "center",
+        color: "#0085ed",
+        
     },
     contentContainer: {
         flex: 1,

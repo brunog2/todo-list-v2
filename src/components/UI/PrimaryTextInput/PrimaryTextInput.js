@@ -14,7 +14,8 @@ export default class PrimaryTextInput extends Component {
                     onChangeText={this.props.onChangeText}
                     secureTextEntry={this.props.secureTextEntry}
                     value={this.props.value}
-                    autoFocus={this.props.autoFocus} />
+                    autoFocus={this.props.autoFocus} 
+                    autoCorrect={this.props.autoCorrect}/>
        
 
         )

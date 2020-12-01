@@ -6,7 +6,7 @@ import { ScrollView, View, Text, TextInput, TouchableOpacity } from 'react-nativ
 import TasksContainerStyles from './TasksContainerStyles';
 import api from '../../services/api';
 
-const TasksContainer = ({ navigation }) => {
+const TasksContainer = (props) => {
     const [tasks, setTasks] = useState([]);
     const [searchText, setSearchText] = useState('');
 
@@ -16,26 +16,23 @@ const TasksContainer = ({ navigation }) => {
         "high": "#f54433"
     };
 
+    const { navigation } = props;
+    const id = props.userId;
+
     async function loadTasks() {
-        await api.get('/tasks')
+        await api.get('/tasks', { params: { userId: id } })
             .then(response => {
                 setTasks(response.data);
-                console.log("setando tarefas: ", console.log)
             })
             .catch((err) => {
                 console.error("Ops! Ocorreu um erro" + err);
             });
-
     };
 
     useFocusEffect(
         React.useCallback(() => {
-            // Do something when the screen is focused
-            console.log("hook das tarefas");
             loadTasks();
             return () => {
-                // Do something when the screen is unfocused
-                // Useful for cleanup functions
             };
         }, [])
     );
@@ -45,7 +42,6 @@ const TasksContainer = ({ navigation }) => {
         api.get('/searchTask', { params: { keywords: text } })
             .then(response => {
                 setTasks(response.data);
-                console.log("joao")
             })
             .catch((err) => {
                 console.error("Ops! Ocorreu um erro" + err);
@@ -58,32 +54,27 @@ const TasksContainer = ({ navigation }) => {
     };
 
     const handleTaskDone = async (index) => {
-        console.log(index, tasks);
         var newTasks = [...tasks];
         var index = index;
-        console.log("endereço/", index);
-    
+
         newTasks[index].done = true;
-        console.log(newTasks[index].done)
         setTasks(newTasks);
-    
+
         function timeout(delay) {
-          return new Promise(res => setTimeout(res, delay));
-    
+            return new Promise(res => setTimeout(res, delay));
+
         };
         await timeout(500);
-    
+
         var newTasks = [...tasks];
-        var taskDescription = newTasks[index].description;
-    
-        await api.post('/deleteTask', { description: taskDescription });
+        var { _id } = newTasks[index];
+
+        await api.delete('/deleteTask', { data: { taskId: _id } }).then((res) => {
+
+        });
         newTasks.splice(index, 1);
         setTasks(newTasks);
-    
-    
-    
-      }
-    
+    };
 
     return (
         <View style={TasksContainerStyles.mainContainer}>
@@ -117,7 +108,7 @@ const TasksContainer = ({ navigation }) => {
 
             </ScrollView>
             <TouchableOpacity style={TasksContainerStyles.floatingButton} onPress={() => {
-                navigation.navigate('Add task', { tasks: tasks })
+                navigation.navigate('Add task', { tasks: tasks, userId: id })
             }}>
                 <Icon type="ionicon" name="add-outline" size={34} iconStyle={TasksContainerStyles.textFloatingButton} />
             </TouchableOpacity>

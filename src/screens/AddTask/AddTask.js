@@ -24,16 +24,14 @@ const AddTask: () => React$Node = ({ route, navigation }) => {
         "high": "#e76256",
     };
 
-    const { tasks } = route.params;
-
+    const { tasks, userId } = route.params;
+   
     const handleOnAddTaskBtPress = async () => {
-        console.log("handle add")
         for (var task in tasks) {
-            console.log("tarefa: ", task)
             if (tasks[task].description.toLowerCase() == taskDescription.toLowerCase()) {
                 Alert.alert(
-                    "Aviso",
-                    "Tarefa já adicionada!",
+                    "Error",
+                    "Task already exists!",
                     [
                         { text: "OK" }
                     ],
@@ -44,15 +42,13 @@ const AddTask: () => React$Node = ({ route, navigation }) => {
         };
 
         var newTask = {
+            userId: userId,
             description: taskDescription,
             priority: taskPriority,
             done: false,
         };
 
-        console.log("nova tarefa: ", newTask);
-
         await api.post('/addTask', newTask).then((response) => {
-            console.log(response.data);
 
         }).catch((err) => {
             console.error("ops! ocorreu um erro" + err);

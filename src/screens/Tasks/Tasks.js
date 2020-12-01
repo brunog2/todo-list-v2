@@ -7,7 +7,9 @@ import DrawerContent from '../../components/DrawerContent/DrawerContent';
 
 const Drawer = createDrawerNavigator();
 
-const Tasks: () => React$Node = ({ navigation }) => {
+const Tasks: () => React$Node = ({ route, navigation }) => {
+
+  const { id } = route.params;
 
   useEffect(() => {
     const backAction = () => {
@@ -31,8 +33,8 @@ const Tasks: () => React$Node = ({ navigation }) => {
   }, []);
 
   return (
-    <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
-      <Drawer.Screen name="Tasks 1" component={StackTasks} />
+    <Drawer.Navigator drawerContent={props => <DrawerContent  {...props} />}>
+      <Drawer.Screen name="Tasks" children={props => <StackTasks  {...props} userId={id}/>} />
 
     </Drawer.Navigator>
 

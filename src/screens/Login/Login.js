@@ -1,12 +1,33 @@
 import 'react-native-gesture-handler';
-import React, { useEffect } from 'react';
-import { View, Text, KeyboardAvoidingView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, KeyboardAvoidingView, Alert } from 'react-native';
 import CustomButton from '../../components/UI/CustomButton/CustomButton';
 import PrimaryTextInput from '../../components/UI/PrimaryTextInput/PrimaryTextInput';
 import LoginStyles from './LoginStyles';
+import api from '../../services/api';
 
 const Login: () => React$Node = ({ navigation }) => {
-    useEffect(() => { console.log("hook do login") }, [])
+    const [textEmail, setTextEmail] = useState('');
+    const [textPassword, setTextPassword] = useState('');
+
+    const handleAuthUserFailed = () => {
+        Alert.alert(
+            "Error",
+            "Email or password incorrect",
+            [
+                { text: "OK" }
+            ],
+            { cancelable: false }
+        );
+        return;
+    }
+
+    const handleBtLoginPress = async () => {
+        await api.post('/authUser', ({ email: textEmail, password: textPassword }))
+            .then((res) => {
+                res.data.auth === "true" ? navigation.navigate('Tasks', { id: res.data.id }) : handleAuthUserFailed()
+            })
+    }
 
     return (
         <KeyboardAvoidingView
@@ -15,11 +36,11 @@ const Login: () => React$Node = ({ navigation }) => {
         >
             <View style={LoginStyles.mainContainer}>
                 <View style={LoginStyles.formContainer}>
-                    <PrimaryTextInput style={LoginStyles.inputText} placeholder="Email"></PrimaryTextInput>
-                    <PrimaryTextInput style={LoginStyles.inputText} placeholder="Password"></PrimaryTextInput>
+                    <PrimaryTextInput autoCorrect={false} autoCapitalize="none" autoCompleteType="email" value={textEmail} onChangeText={setTextEmail} style={LoginStyles.inputText} placeholder="Email"></PrimaryTextInput>
+                    <PrimaryTextInput autoCorrect={false} secureTextEntry={true} autoCapitalize="none" autoCompleteType="off" value={textPassword} onChangeText={setTextPassword} style={LoginStyles.inputText} placeholder="Password"></PrimaryTextInput>
                     <CustomButton style={LoginStyles.btLogin} text="Login"
                         onPress={() => {
-                            navigation.navigate('Tasks')
+                            handleBtLoginPress()
                         }}>
                     </CustomButton>
                 </View>
