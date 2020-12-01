@@ -8,35 +8,44 @@ const AddTaskStyles = StyleSheet.create({
         justifyContent: "space-between"
     },
     elementsContainer: {
-        borderWidth: 1,
+        alignItems: "center",
         width: "100%",
-        
+
     },
-    formContainer: {
-        width: "100%",
-    },
-    inputText: {
-        marginTop: 20,
-        width: "100%"
-    },
-    btAddTask: {
+    searchContainer: {
         marginTop: 10,
-        marginBottom: 25,
-        width: "100%"
+        height: 50,
+        width: "90%",
+        flexDirection: "row",
+        borderRadius: 6,
+        justifyContent: "space-between",
+        alignItems: "center",
+        height: "65%",
+        maxHeight: 35,
     },
-    containerPriority: {
+    searchInput: {
+
+
+        backgroundColor: "#ebf0f5",
         width: "90%",
         padding: 5,
-        borderRadius: 10,
+
+        borderRadius: 6,
+
+        height: "100%",
+    },
+    containerPriority: {
+        paddingBottom: 5,
+        paddingTop: 5,
+        width: "90%",
+        borderRadius: 7,
         height: 40,
         display: "flex",
         flexDirection: "row",
-        justifyContent: "space-around",
-
-
+        justifyContent: "space-between",
         alignItems: "center",
-        marginBottom: 10,
-        marginTop: 10,
+        marginBottom: 15,
+        marginTop: 15,
     },
     buttonPriority: {
         display: "flex",

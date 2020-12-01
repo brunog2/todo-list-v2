@@ -1,11 +1,13 @@
 import 'react-native-gesture-handler';
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import CustomButton from '../../components/UI/CustomButton/CustomButton';
-import PrimaryTextInput from '../../components/UI/PrimaryTextInput/PrimaryTextInput';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { Icon } from 'react-native-elements';
 import AddTaskStyles from './AddTaskStyles';
+import api from '../../services/api';
 
-const AddTask: () => React$Node = ({ navigation }) => {
+const AddTask: () => React$Node = ({ route, navigation }) => {
+    const [taskDescription, setTaskDescription] = useState('');
+    const [taskPriority, setTaskPriority] = useState('low');
     const [bgPriorityBtColor, setBgPriorityBtColor] = useState({
         "low": "",
         "medium": "",
@@ -20,6 +22,44 @@ const AddTask: () => React$Node = ({ navigation }) => {
         "low": "#ede615",
         "medium": "#fdaf3d",
         "high": "#e76256",
+    };
+
+    const { tasks } = route.params;
+
+    const handleOnAddTaskBtPress = async () => {
+        console.log("handle add")
+        for (var task in tasks) {
+            console.log("tarefa: ", task)
+            if (tasks[task].description.toLowerCase() == taskDescription.toLowerCase()) {
+                Alert.alert(
+                    "Aviso",
+                    "Tarefa já adicionada!",
+                    [
+                        { text: "OK" }
+                    ],
+                    { cancelable: false }
+                );
+                return;
+            }
+        };
+
+        var newTask = {
+            description: taskDescription,
+            priority: taskPriority,
+            done: false,
+        };
+
+        console.log("nova tarefa: ", newTask);
+
+        await api.post('/addTask', newTask).then((response) => {
+            console.log(response.data);
+
+        }).catch((err) => {
+            console.error("ops! ocorreu um erro" + err);
+        });
+
+        setTaskDescription('');
+        navigation.navigate("Tasks");
     };
 
     const handlePriorityBtPress = (colorPriority) => {
@@ -41,43 +81,38 @@ const AddTask: () => React$Node = ({ navigation }) => {
 
         textColors[colorPriority] = "#fff";
         setTextsPriorityBtColor(textColors);
+        setTaskPriority(colorPriority);
 
     };
 
     return (
         <View style={AddTaskStyles.mainContainer}>
-            <View style={AddTaskStyles.elementscontainer}>
-                <View style={AddTaskStyles.formContainer}>
-                    <PrimaryTextInput style={AddTaskStyles.inputText} placeholder="Task Title"></PrimaryTextInput>
+            <View style={AddTaskStyles.elementsContainer}>
+                <View style={AddTaskStyles.searchContainer}>
+                    <TextInput value={taskDescription} onChangeText={text => setTaskDescription(text)} placeholder="Task name" style={AddTaskStyles.searchInput} />
+                    <Icon type="ionicon" name="add-circle-outline" style={AddTaskStyles.btAddTask} onPress={() => handleOnAddTaskBtPress()} />
                 </View>
 
                 <View style={AddTaskStyles.containerPriority}>
-                    <View style={AddTaskStyles.borderButtonPriority}></View>
-
                     <TouchableOpacity style={[AddTaskStyles.buttonPriority, { backgroundColor: bgPriorityBtColor.low }]} onPress={() => handlePriorityBtPress("low")}>
-                        <Text style={{ color: textsPriorityBtColor.low, fontSize: 16 }}>Low</Text>
+                        <Text style={{ color: textsPriorityBtColor.low, fontSize: 14 }}>Low</Text>
                     </TouchableOpacity>
 
                     <View style={AddTaskStyles.borderButtonPriority}></View>
 
                     <TouchableOpacity style={[AddTaskStyles.buttonPriority, { backgroundColor: bgPriorityBtColor.medium }]} onPress={() => handlePriorityBtPress("medium")}>
-                        <Text style={{ color: textsPriorityBtColor.medium, fontSize: 16 }}>Medium</Text>
+                        <Text style={{ color: textsPriorityBtColor.medium, fontSize: 14 }}>Medium</Text>
                     </TouchableOpacity>
 
                     <View style={AddTaskStyles.borderButtonPriority}></View>
-                    <TouchableOpacity style={[AddTaskStyles.buttonPriority, { backgroundColor: bgPriorityBtColor.high }]} onPress={() => handlePriorityBtPress("high")}>
-                        <Text style={{ color: textsPriorityBtColor.high, fontSize: 16 }}>High</Text>
+                    <TouchableOpacity style={[AddTaskStyles.buttonPriority, { backgroundColor : bgPriorityBtColor.high }]} onPress={() => handlePriorityBtPress("high")}>
+                        <Text style={{ color: textsPriorityBtColor.high, fontSize: 14 }}>High</Text>
                     </TouchableOpacity>
-
-                    <View style={AddTaskStyles.borderButtonPriority}></View>
                 </View>
+
             </View>
 
-            <CustomButton style={AddTaskStyles.btAddTask} text="Add task"
-                onPress={() => {
-                    navigation.navigate('Tasks')
-                }}>
-            </CustomButton>
+
         </View>
     )
 };
