@@ -1,6 +1,6 @@
 # Simple To Do List
 
-A simple To Do List for scholl homework.
+A simple To Do List for school homework.
 
 ## Installation
 
