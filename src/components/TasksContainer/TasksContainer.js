@@ -99,11 +99,17 @@ const TasksContainer = (props) => {
                                     checkedColor="#0070c9"
                                 />
 
-                                <Text style={{ textDecorationLine: task.done ? 'line-through' : 'none' }}>{task.description}</Text>
+                                <Text style={{marginRight: 35, textDecorationLine: task.done ? 'line-through' : 'none' }}>{task.description}</Text>
                             </View>
 
                             <View style={[TasksContainerStyles.priorityBar, { backgroundColor: colors[task.priority] }]}>
                             </View>
+                            <Icon type="ionicon" 
+                            iconStyle={{ color: "black", marginLeft: 15}} 
+                            name="create-outline" 
+                            onPress={() => {
+                                navigation.navigate('Edit task', { tasks: tasks, task: tasks[index], userId: id })
+                            }}/>
                         </View>
                     ))}
 
@@ -111,7 +117,7 @@ const TasksContainer = (props) => {
             <TouchableOpacity style={TasksContainerStyles.floatingButton} onPress={() => {
                 navigation.navigate('Add task', { tasks: tasks, userId: id })
             }}>
-                <Icon type="ionicon" name="add-outline" size={34} iconStyle={TasksContainerStyles.textFloatingButton} />
+                <Icon type="ionicon" name="add-outline" iconStyle={TasksContainerStyles.textFloatingButton} />
             </TouchableOpacity>
         </View >
     )

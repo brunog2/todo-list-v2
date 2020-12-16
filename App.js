@@ -22,6 +22,7 @@ import RecoveryNote from './src/screens/RecoveryNote/RecoveryNote';
 import AccountCreated from './src/screens/AccountCreated/AccountCreated';
 import Tasks from './src/screens/Tasks/Tasks';
 import AddTask from './src/screens/AddTask/AddTask';
+import EditTask from './src/screens/EditTask/EditTask';
 
 const Stack = createStackNavigator();
 
@@ -69,7 +70,11 @@ const App: () => React$Node = () => {
         <Stack.Screen
           name="Add task"
           component={AddTask}
+        />
 
+        <Stack.Screen
+          name="Edit task"
+          component={EditTask}
         />
 
       </ Stack.Navigator >
