@@ -62,17 +62,8 @@ const TasksContainer = (props) => {
         }, [])
     );
 
-    const handleSearch = async () => {
-        await loadTasks();
-        let newTasks = [];
-        for(let i in tasks){
-            let text = tasks[i].description;
-            let exists = text.includes(searchText);
-            if(exists){
-                newTasks.push(tasks[i]);
-            }
-        }
-        setTasks(newTasks);
+    const handleSearch = () => {
+        loadTasks();
     }
 
     useEffect(()=>{
