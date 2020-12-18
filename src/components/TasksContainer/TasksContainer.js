@@ -14,6 +14,7 @@ let timer;
 
 const TasksContainer = (props) => {
     const [tasks, setTasks] = useState([]);
+    const [tasksOrigin, setTasksOrigin] = useState([]);
     const [searchText, setSearchText] = useState('');
 
     const colors = {
@@ -45,6 +46,7 @@ const TasksContainer = (props) => {
             }
         );
         setTasks(newTasks);
+        setTasksOrigin(newTasks);
         // await api.get('/tasks', { params: { userId: id } })
         //     .then(response => {
         //         setTasks(response.data);
@@ -63,7 +65,18 @@ const TasksContainer = (props) => {
     );
 
     const handleSearch = () => {
-        loadTasks();
+        let newTasks = [];
+        if(searchText===''){
+            loadTasks();
+        }else{
+            tasksOrigin.forEach((item)=>{
+                let {description} = item;
+                if(description.indexOf(searchText)!= -1){
+                    newTasks.push(item);
+                }
+            });
+            setTasks(newTasks);
+        }
     }
 
     useEffect(()=>{
