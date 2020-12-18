@@ -5,6 +5,10 @@ import { Icon } from 'react-native-elements';
 import EditTaskStyles from './EditTaskStyles';
 import api from '../../services/api';
 
+
+import firestore from '@react-native-firebase/firestore';
+const tasksCollection = firestore().collection('Tasks');
+
 const EditTask: () => React$Node = ({ route, navigation }) => {
     const { tasks, task, userId } = route.params;
     const colors = {
@@ -26,28 +30,11 @@ const EditTask: () => React$Node = ({ route, navigation }) => {
     });
 
     const handleOnEditTaskBtPress = async () => {
-        for (var task in tasks) {
-            if (tasks[task].description.toLowerCase() == taskDescription.toLowerCase()) {
-                Alert.alert(
-                    "Error",
-                    "Task already exists!",
-                    [
-                        { text: "OK" }
-                    ],
-                    { cancelable: false }
-                );
-                return;
-            }
-        };
 
-        var newTask = {
-            userId: userId,
-            description: taskDescription,
-            priority: taskPriority,
-            done: false,
-        };
-
-        // requisição pra editar tarefa
+        await tasksCollection.doc(task.id).update({
+            description:taskDescription,
+            priority:taskPriority 
+        }).then(()=>console.log('Task changed')).catch((err)=>Alert.alert("ERROR", err));
 
         setTaskDescription('');
         navigation.navigate("Tasks");

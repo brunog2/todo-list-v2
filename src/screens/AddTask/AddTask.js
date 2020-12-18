@@ -5,6 +5,10 @@ import { Icon } from 'react-native-elements';
 import AddTaskStyles from './AddTaskStyles';
 import api from '../../services/api';
 
+import firestore from '@react-native-firebase/firestore';
+const tasksCollection = firestore().collection('Tasks');
+
+
 const AddTask: () => React$Node = ({ route, navigation }) => {
     const [taskDescription, setTaskDescription] = useState('');
     const [taskPriority, setTaskPriority] = useState('low');
@@ -47,12 +51,12 @@ const AddTask: () => React$Node = ({ route, navigation }) => {
             priority: taskPriority,
             done: false,
         };
+        tasksCollection.add({...newTask}).then(()=>console.log('Task cadastrada!')).catch((err)=>Alert.alert("ERROR", err));
+        // await api.post('/addTask', newTask).then((response) => {
 
-        await api.post('/addTask', newTask).then((response) => {
-
-        }).catch((err) => {
-            console.error("ops! ocorreu um erro" + err);
-        });
+        // }).catch((err) => {
+        //     console.error("ops! ocorreu um erro" + err);
+        // });
 
         setTaskDescription('');
         navigation.navigate("Tasks");

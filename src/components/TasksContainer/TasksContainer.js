@@ -2,9 +2,15 @@ import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { CheckBox, Icon } from 'react-native-elements';
-import { ScrollView, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { ScrollView, View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import TasksContainerStyles from './TasksContainerStyles';
 import api from '../../services/api';
+
+import firestore from '@react-native-firebase/firestore';
+const tasksCollection = firestore().collection('Tasks');
+
+let timer;
+
 
 const TasksContainer = (props) => {
     const [tasks, setTasks] = useState([]);
@@ -20,14 +26,32 @@ const TasksContainer = (props) => {
     const id = props.userId;
 
     async function loadTasks() {
-        console.log("o id do usuário: ", id)
-        await api.get('/tasks', { params: { userId: id } })
-            .then(response => {
-                setTasks(response.data);
-            })
-            .catch((err) => {
-                console.error("Ops! Ocorreu um erro" + err);
-            });
+        console.log("o id do usuário: ", id);
+        let newTasks = [];
+        await tasksCollection.where('userId', '==', id)
+            .get()
+            .then(snapshot => {
+                if (snapshot.empty) {
+                  console.log('No matching documents.');
+                  return;
+                }
+                snapshot.forEach(doc => {
+                  //console.log(doc.id, '=>', doc.data());
+                  newTasks.push({...doc.data(), id:doc.id});
+                });
+              })
+            .catch(err => {
+                console.log('Error getting documents', err);
+            }
+        );
+        setTasks(newTasks);
+        // await api.get('/tasks', { params: { userId: id } })
+        //     .then(response => {
+        //         setTasks(response.data);
+        //     })
+        //     .catch((err) => {
+        //         console.error("Ops! Ocorreu um erro" + err);
+        //     });
     };
 
     useFocusEffect(
@@ -38,15 +62,36 @@ const TasksContainer = (props) => {
         }, [])
     );
 
+    const handleSearch = async () => {
+        await loadTasks();
+        let newTasks = [];
+        for(let i in tasks){
+            let text = tasks[i].description;
+            let exists = text.includes(searchText);
+            if(exists){
+                newTasks.push(tasks[i]);
+            }
+        }
+        setTasks(newTasks);
+    }
+
+    useEffect(()=>{
+        if(timer){
+            clearTimeout(timer);
+        }
+
+        timer = setTimeout(handleSearch, 2000);
+    }, [searchText]);
+
     const handleSearchTextChange = (text) => {
         setSearchText(text);
-        api.get('/searchTask', { params: { keywords: text, userId: id } })
-            .then(response => {
-                setTasks(response.data);
-            })
-            .catch((err) => {
-                console.error("Ops! Ocorreu um erro" + err);
-            });
+        // api.get('/searchTask', { params: { keywords: text, userId: id } })
+        //     .then(response => {
+        //         setTasks(response.data);
+        //     })
+        //     .catch((err) => {
+        //         console.error("Ops! Ocorreu um erro" + err);
+        //     });
     };
 
     const handleDeleteTextButtonPress = () => {
@@ -66,15 +111,16 @@ const TasksContainer = (props) => {
 
         };
         await timeout(500);
+      
+        await tasksCollection.doc(tasks[index].id).delete().then(()=>console.log('Task concluída')).catch((err)=>Alert.alert('ERROR', err));
+        loadTasks();
+     
+        // var newTasks = [...tasks];
+        // var { _id } = newTasks[index];
 
-        var newTasks = [...tasks];
-        var { _id } = newTasks[index];
+        // await api.delete('/deleteTask', { data: { taskId: _id } }).then((res) => {
 
-        await api.delete('/deleteTask', { data: { taskId: _id } }).then((res) => {
-
-        });
-        newTasks.splice(index, 1);
-        setTasks(newTasks);
+        // });
     };
 
     return (

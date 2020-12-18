@@ -4,11 +4,30 @@ import { View, Text, KeyboardAvoidingView, Alert } from 'react-native';
 import CustomButton from '../../components/UI/CustomButton/CustomButton';
 import PrimaryTextInput from '../../components/UI/PrimaryTextInput/PrimaryTextInput';
 import LoginStyles from './LoginStyles';
+
+import auth from '@react-native-firebase/auth';
+
 import api from '../../services/api';
 
 const Login: () => React$Node = ({ navigation }) => {
     const [textEmail, setTextEmail] = useState('');
     const [textPassword, setTextPassword] = useState('');
+
+    const [initializing, setInitializing] = useState(true);
+    const [user, setUser] = useState();
+
+    function onAuthStateChanged(user) {
+        setUser(user);
+        if (initializing) setInitializing(false);
+        if(user){
+            navigation.navigate('Tasks', { id: user.uid });
+        }
+    }
+
+    useEffect(() => {
+        const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+        return subscriber; // unsubscribe on unmount
+    }, []);
 
     const handleAuthUserFailed = () => {
         Alert.alert(
@@ -23,11 +42,28 @@ const Login: () => React$Node = ({ navigation }) => {
     }
 
     const handleBtLoginPress = async () => {
-        await api.post('/authUser', ({ email: textEmail, password: textPassword }))
-            .then((res) => {
-                res.data.auth === "true" ? navigation.navigate('Tasks', { id: res.data.id }) : handleAuthUserFailed()
-            })
+        auth().signInWithEmailAndPassword(textEmail, textPassword)
+        .then(() => {
+            console.log('User account created & signed in!');
+        })
+        .catch(error => {
+            if (error.code === 'auth/email-already-in-use') {
+                Alert.alert('That email address is already in use!');
+            }
+
+            if (error.code === 'auth/invalid-email') {
+                Alert.alert('That email address is invalid!');
+            }
+
+            Alert.alert(error);
+        });
+        // await api.post('/authUser', ({ email: textEmail, password: textPassword }))
+        //     .then((res) => {
+        //         res.data.auth === "true" ? navigation.navigate('Tasks', { id: res.data.id }) : handleAuthUserFailed()
+        //     })
     }
+
+    if (initializing) return null;
 
     return (
         <KeyboardAvoidingView

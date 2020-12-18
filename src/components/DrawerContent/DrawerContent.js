@@ -4,8 +4,16 @@ import { ScrollView, View, SafeAreaView } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { DrawerItemList, DrawerItem, } from '@react-navigation/drawer';
 import DrawerContentStyles from './DrawerContentStyles';
+import auth from '@react-native-firebase/auth';
+
 
 function DrawerContent(props) {
+
+    const logout = () => {
+        auth().signOut()
+        .then(() => props.navigation.navigate('Login'));
+    }
+
     return (
         <SafeAreaView style={DrawerContentStyles.scrollItems}>
             <View style={DrawerContentStyles.containerLogo}>
@@ -15,9 +23,7 @@ function DrawerContent(props) {
             <ScrollView contentContainerStyle={DrawerContentStyles.contentContainer} {...props}>
                 <DrawerItemList  {...props} />
 
-                <DrawerItem labelStyle={DrawerContentStyles.labelSignOut} label="Sign out" onPress={() => {
-                    props.navigation.navigate('Login')
-                }} />
+                <DrawerItem labelStyle={DrawerContentStyles.labelSignOut} label="Sign out" onPress={logout} />
             </ScrollView>
         </SafeAreaView>
     );

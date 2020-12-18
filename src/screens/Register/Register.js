@@ -1,40 +1,75 @@
 import 'react-native-gesture-handler';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Keyboard, KeyboardAvoidingView, Alert } from 'react-native';
 import CustomButton from '../../components/UI/CustomButton/CustomButton';
 import PrimaryTextInput from '../../components/UI/PrimaryTextInput/PrimaryTextInput';
 import RegisterStyles from './RegisterStyles';
 import api from '../../services/api';
 
+import auth from '@react-native-firebase/auth';
+
 const Register: () => React$Node = ({ navigation }) => {
     const [textName, setTextName] = useState('');
     const [textEmail, setTextEmail] = useState('');
     const [textPassword, setTextPassword] = useState('');
 
-    const handleRegisterButtonPress = async () => {
+    const [initializing, setInitializing] = useState(true);
+    const [user, setUser] = useState();
 
-        const user = {
-            name: textName,
-            email: textEmail,
-            password: textPassword,
+    function onAuthStateChanged(user) {
+        setUser(user);
+        if (initializing) setInitializing(false);
+        if(user){
+            navigation.navigate('Tasks', { id: user.uid });
         }
-        await api.post('/registerUser', user)
-            .then((res) => {
-                if (res.data.register == "success") {
-                    navigation.navigate('Account Created!');
-                    return;
-                } else {
-                    Alert.alert(
-                        "Error",
-                        "Email already registred!",
-                        [
-                            { text: "OK" }
-                        ],
-                        { cancelable: false }
-                    );
-                };
-                return;
-            })
+    }
+
+    useEffect(() => {
+        const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+        return subscriber; // unsubscribe on unmount
+    }, []);
+
+
+    const handleRegisterButtonPress = async () => {
+        auth().createUserWithEmailAndPassword(textEmail, textPassword)
+        .then(() => {
+            console.log('User account created & signed in!');
+        })
+        .catch(error => {
+            if (error.code === 'auth/email-already-in-use') {
+                Alert.alert('That email address is already in use!');
+            }
+
+            if (error.code === 'auth/invalid-email') {
+                Alert.alert('That email address is invalid!');
+            }
+
+            Alert.alert(error);
+        });
+
+        // const user = {
+        //     name: textName,
+        //     email: textEmail,
+        //     password: textPassword,
+        // }
+        // await api.post('/registerUser', user)
+        //     .then((res) => {
+        //         if (res.data.register == "success") {
+        //             navigation.navigate('Account Created!');
+        //             return;
+        //         } else {
+        //             Alert.alert(
+        //                 "Error",
+        //                 "Email already registred!",
+        //                 [
+        //                     { text: "OK" }
+        //                 ],
+        //                 { cancelable: false }
+        //             );
+        //         };
+        //         return;
+        //     })
+
     }
 
     return (
