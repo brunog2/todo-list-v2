@@ -44,7 +44,11 @@ const Register: () => React$Node = ({ navigation }) => {
                 Alert.alert('That email address is invalid!');
             }
 
-            Alert.alert(error);
+            if (error.code === 'auth/weak-password') {
+                Alert.alert('The password is weak!');
+            }
+
+            console.error(error);
         });
 
         // const user = {

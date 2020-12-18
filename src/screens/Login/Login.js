@@ -55,7 +55,11 @@ const Login: () => React$Node = ({ navigation }) => {
                 Alert.alert('That email address is invalid!');
             }
 
-            Alert.alert(error);
+            if (error.code === 'auth/wrong-password') {
+                Alert.alert('Wrong password!');
+            }
+
+            console.error(error);
         });
         // await api.post('/authUser', ({ email: textEmail, password: textPassword }))
         //     .then((res) => {

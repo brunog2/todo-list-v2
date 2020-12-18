@@ -66,11 +66,12 @@ const TasksContainer = (props) => {
 
     const handleSearch = () => {
         let newTasks = [];
+        console.log('texto da tarefa: ', searchText)
         if(searchText===''){
             loadTasks();
         }else{
             tasksOrigin.forEach((item)=>{
-                let {description} = item;
+                let description = item.description.toLowerCase();
                 if(description.indexOf(searchText)!= -1){
                     newTasks.push(item);
                 }
@@ -84,7 +85,7 @@ const TasksContainer = (props) => {
             clearTimeout(timer);
         }
 
-        timer = setTimeout(handleSearch, 2000);
+        timer = setTimeout(handleSearch, 150);
     }, [searchText]);
 
     const handleSearchTextChange = (text) => {
